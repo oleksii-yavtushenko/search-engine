@@ -1,4 +1,4 @@
-package com.search.me.searchengine.crawl.crawler;
+package com.peek.search.crawl.crawler;
 
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;

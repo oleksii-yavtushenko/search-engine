@@ -1,4 +1,4 @@
-package com.search.me.searchengine;
+package com.peek.search;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

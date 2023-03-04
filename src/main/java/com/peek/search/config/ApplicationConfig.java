@@ -1,4 +1,4 @@
-package com.search.me.searchengine.config;
+package com.peek.search.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

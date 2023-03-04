@@ -1,4 +1,4 @@
-package com.search.me.searchengine;
+package com.peek.search;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

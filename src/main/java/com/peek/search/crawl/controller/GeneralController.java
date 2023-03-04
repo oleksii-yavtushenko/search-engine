@@ -1,6 +1,6 @@
-package com.search.me.searchengine.crawl.controller;
+package com.peek.search.crawl.controller;
 
-import com.search.me.searchengine.crawl.crawler.GeneralCrawler;
+import com.peek.search.crawl.crawler.GeneralCrawler;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
