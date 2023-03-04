@@ -1,0 +1,18 @@
+volumes:
+  pg_data:
+
+
+services:
+  database:
+    container_name: peek_db
+    image: postgres:15.2
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: peek_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./init:/docker-entrypoint-initdb.d"
+      - pg_data:/var/lib/postgresql/data/
