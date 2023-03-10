@@ -1,17 +1,27 @@
 package com.peek.search.crawl.crawler;
 
+import com.peek.search.crawl.config.CrawlConfiguration;
+import com.peek.search.crawl.keyword.KeywordExtractor;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class GeneralCrawler extends WebCrawler {
 
     private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|gif|jpg"
                                                                 + "|png|mp3|mp4|zip|gz))$");
+
+    private final KeywordExtractor keywordExtractor;
+    private final CrawlConfiguration crawlConfiguration;
+
     /**
      * This method receives two parameters. The first parameter is the page
      * in which we have discovered this new url and the second parameter is
@@ -26,7 +36,7 @@ public class GeneralCrawler extends WebCrawler {
     public boolean shouldVisit(Page referringPage, WebURL url) {
         String href = url.getURL().toLowerCase();
         return !FILTERS.matcher(href).matches()
-                && href.startsWith("https://www.ics.uci.edu/");
+                && href.startsWith("https://www.youtube.com/");
     }
 
     /**
@@ -39,10 +49,14 @@ public class GeneralCrawler extends WebCrawler {
         System.out.println("URL: " + url);
 
         if (page.getParseData() instanceof HtmlParseData htmlParseData) {
+            List<String> extractedKeywords =
+                    keywordExtractor.extract(htmlParseData.getText(), crawlConfiguration.getKeywordExtractNum());
             String text = htmlParseData.getText();
             String html = htmlParseData.getHtml();
             Set<WebURL> links = htmlParseData.getOutgoingUrls();
 
+            System.out.println("Extracted keywords: " + String.join(", ", extractedKeywords));
+            System.out.println("Num of extracted keywords: " + extractedKeywords.size());
             System.out.println("Text length: " + text.length());
             System.out.println("Html length: " + html.length());
             System.out.println("Number of outgoing links: " + links.size());
