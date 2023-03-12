@@ -1,8 +1,9 @@
 package com.peek.search.crawl.controller;
 
 import com.peek.search.crawl.config.CrawlConfiguration;
-import com.peek.search.crawl.crawler.GeneralCrawler;
+import com.peek.search.crawl.crawler.DefaultCrawler;
 import com.peek.search.crawl.keyword.KeywordExtractor;
+import com.peek.search.service.WebPageService;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
@@ -20,20 +21,23 @@ import java.util.concurrent.ExecutorService;
 
 @Component
 @Slf4j
-public class GeneralController implements Controller {
+public class DefaultController implements Controller {
 
     private CrawlController crawlController;
     private final ExecutorService executorService;
     private final KeywordExtractor keywordExtractor;
     private final CrawlConfiguration crawlConfiguration;
+    private final WebPageService webPageService;
 
     @Autowired
-    public GeneralController(ExecutorService executorService,
+    public DefaultController(ExecutorService executorService,
                              KeywordExtractor keywordExtractor,
-                             CrawlConfiguration crawlConfiguration) {
+                             CrawlConfiguration crawlConfiguration,
+                             WebPageService webPageService) {
         this.executorService = executorService;
         this.keywordExtractor = keywordExtractor;
         this.crawlConfiguration = crawlConfiguration;
+        this.webPageService = webPageService;
         start();
     }
 
@@ -59,10 +63,13 @@ public class GeneralController implements Controller {
             // For each crawl, you need to add some seed urls. These are the first
             // URLs that are fetched and then the crawler starts following links
             // which are found in these pages
-            crawlController.addSeed("https://www.youtube.com/");
+            crawlController.addSeed("https://rezka.ag/");
 
             // The factory which creates instances of crawlers.
-            CrawlController.WebCrawlerFactory<WebCrawler> factory = () -> new GeneralCrawler(keywordExtractor, crawlConfiguration);
+            CrawlController.WebCrawlerFactory<WebCrawler> factory = () -> new DefaultCrawler(
+                    keywordExtractor,
+                    crawlConfiguration,
+                    webPageService);
 
             // Start the crawl. This is a blocking operation, meaning that your code
             // will reach the line after this only when crawling is finished.

@@ -14,22 +14,21 @@ import java.util.Set;
 
 
 @Component
-public class GeneralKeywordExtractor implements KeywordExtractor {
+public class DefaultKeywordExtractor implements KeywordExtractor {
 
-    private static final Set<String> STOP_WORDS = new HashSet<>(Arrays.asList("a", "an", "the", "and", "or", "of", "to", "in", "on", "at", "with"));
+    private static final Set<String> STOP_WORDS = new HashSet<>(Arrays.asList("a", "an", "the", "and", "or", "of", "to", "in", "on", "at", "with", "и", "да", "или", "на", "або", "і"));
 
     @Override
     public List<String> extract(String textContent, int numKeywords) {
         // Step 1: Parse the HTML page and extract the text content.
         // This can be done using an HTML parser library such as JSoup.
-        Document doc = Jsoup.parse(textContent);
+        Document doc = Jsoup.parseBodyFragment(textContent);
         String text = doc.text();
 
         // Step 2: Clean the text content by removing HTML tags, stop words, and other irrelevant content.
-        List<String> tokens = Arrays.stream(text.split("[\\s.,;:()\\[\\]{}\"'\\/]+"))
-                .filter(token -> !STOP_WORDS.contains(token.toLowerCase()))
-                .filter(token -> token.matches("[a-zA-Z]+"))
+        List<String> tokens = Arrays.stream(text.split("[^\\p{L}\\d]+"))
                 .map(String::toLowerCase)
+                .filter(o -> !STOP_WORDS.contains(o))
                 .toList();
 
         // Step 3: Tokenize the cleaned text content into individual words.

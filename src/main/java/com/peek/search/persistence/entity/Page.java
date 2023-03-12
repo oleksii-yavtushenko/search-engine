@@ -1,14 +1,23 @@
 package com.peek.search.persistence.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Table(name = "Pages")
+@Data
 public class Page {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String url;
 
@@ -16,5 +25,6 @@ public class Page {
 
     private String content;
 
-    // constructors, getters, setters, etc.
+    @ManyToMany(mappedBy = "pages")
+    private List<Keyword> keywords;
 }

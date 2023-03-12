@@ -2,25 +2,30 @@ package com.peek.search.crawl.crawler;
 
 import com.peek.search.crawl.config.CrawlConfiguration;
 import com.peek.search.crawl.keyword.KeywordExtractor;
+import com.peek.search.service.WebPageService;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.jsoup.internal.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+@Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class GeneralCrawler extends WebCrawler {
+public class DefaultCrawler extends WebCrawler {
 
     private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|gif|jpg"
                                                                 + "|png|mp3|mp4|zip|gz))$");
 
     private final KeywordExtractor keywordExtractor;
     private final CrawlConfiguration crawlConfiguration;
+    private final WebPageService webPageService;
 
     /**
      * This method receives two parameters. The first parameter is the page
@@ -36,7 +41,7 @@ public class GeneralCrawler extends WebCrawler {
     public boolean shouldVisit(Page referringPage, WebURL url) {
         String href = url.getURL().toLowerCase();
         return !FILTERS.matcher(href).matches()
-                && href.startsWith("https://www.youtube.com/");
+                && href.startsWith("https://rezka.ag/");
     }
 
     /**
@@ -46,20 +51,25 @@ public class GeneralCrawler extends WebCrawler {
     @Override
     public void visit(Page page) {
         String url = page.getWebURL().getURL();
-        System.out.println("URL: " + url);
+        log.info("URL: " + url);
 
         if (page.getParseData() instanceof HtmlParseData htmlParseData) {
             List<String> extractedKeywords =
-                    keywordExtractor.extract(htmlParseData.getText(), crawlConfiguration.getKeywordExtractNum());
+                    keywordExtractor.extract(htmlParseData.getHtml(), crawlConfiguration.getKeywordExtractNum());
             String text = htmlParseData.getText();
             String html = htmlParseData.getHtml();
             Set<WebURL> links = htmlParseData.getOutgoingUrls();
 
-            System.out.println("Extracted keywords: " + String.join(", ", extractedKeywords));
-            System.out.println("Num of extracted keywords: " + extractedKeywords.size());
-            System.out.println("Text length: " + text.length());
-            System.out.println("Html length: " + html.length());
-            System.out.println("Number of outgoing links: " + links.size());
+            if (!extractedKeywords.isEmpty() && !text.isEmpty() && !StringUtil.isBlank(url)) {
+                webPageService.saveWebPage(page.getWebURL().getURL(),
+                        htmlParseData.getText(), htmlParseData.getTitle(), extractedKeywords);
+            }
+
+            log.info("Extracted keywords: " + String.join(", ", extractedKeywords));
+            log.info("Num of extracted keywords: " + extractedKeywords.size());
+            log.info("Text length: " + text.length());
+            log.info("Html length: " + html.length());
+            log.info("Number of outgoing links: " + links.size());
         }
     }
 }
