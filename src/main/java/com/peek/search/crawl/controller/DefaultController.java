@@ -38,7 +38,7 @@ public class DefaultController implements Controller {
         this.keywordExtractor = keywordExtractor;
         this.crawlConfiguration = crawlConfiguration;
         this.webPageService = webPageService;
-        start();
+        //start();
     }
 
     @Override

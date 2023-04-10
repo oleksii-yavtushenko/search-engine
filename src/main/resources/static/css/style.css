@@ -1,0 +1,29 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+main {
+    flex: 1;
+    padding: 50px 0;
+}
+
+.footer {
+    margin-top: auto;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Stretch site to sides */
+body {
+    justify-content: space-between;
+}
+
+.container {
+    width: 100%;
+}
