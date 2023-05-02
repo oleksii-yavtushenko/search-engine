@@ -23,6 +23,7 @@ public class DefaultSearchService implements SearchService {
         var keywords = Arrays.stream(searchQuery.trim()
                         .toLowerCase()
                         .split("\\s+"))
+                .parallel()
                 .map(keywordRepository::findKeywordByKeyword)
                 .filter(Optional::isPresent)
                 .map(Optional::get)

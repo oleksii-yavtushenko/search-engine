@@ -32,7 +32,7 @@ public class DefaultWebPageService implements WebPageService {
         page.setContent(content);
 
         // Save the Page entity using the PageRepository
-        Page savedPage = pageRepository.save(page);
+        pageRepository.save(page);
 
         // For each keyword, find existing Keyword entity (or instantiate a new one) and set its attributes
         keywords.parallelStream().forEach(k -> {

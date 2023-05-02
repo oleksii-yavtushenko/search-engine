@@ -23,6 +23,7 @@ public class SearchController {
     public String search(@RequestParam("query") String query,
                          Model model) {
         var pages = searchService.search(query);
+        model.addAttribute("query", query);
         model.addAttribute("pages", pages);
         return "results";
     }
