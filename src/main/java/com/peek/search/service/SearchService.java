@@ -1,10 +1,10 @@
 package com.peek.search.service;
 
-import com.peek.search.persistence.entity.Page;
+import com.peek.search.web.dto.SearchResultDto;
 
 import java.util.List;
 
 public interface SearchService {
 
-    List<Page> search(String searchQuery);
+    List<SearchResultDto> search(String searchQuery);
 }

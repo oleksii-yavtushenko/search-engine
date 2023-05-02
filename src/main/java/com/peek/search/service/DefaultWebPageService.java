@@ -40,7 +40,14 @@ public class DefaultWebPageService implements WebPageService {
             Keyword kw = optionalKeyword.orElse(new Keyword());
 
             kw.setKeyword(k);
-            kw.setPages(Set.of(savedPage));
+
+            var pages = kw.getPages();
+
+            if (pages != null && !pages.isEmpty()) {
+                pages.add(page);
+            } else {
+                kw.setPages(Set.of(page));
+            }
 
             // Save the Keyword entity using the KeywordRepository
             keywordRepository.save(kw);

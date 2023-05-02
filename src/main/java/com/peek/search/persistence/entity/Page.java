@@ -1,18 +1,24 @@
 package com.peek.search.persistence.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.List;
 
 @Entity
 @Table(name = "Pages")
 @Data
+@EqualsAndHashCode(exclude = "keywords")
+@ToString(exclude = "keywords")
 public class Page {
 
     @Id
@@ -25,6 +31,6 @@ public class Page {
 
     private String content;
 
-    @ManyToMany(mappedBy = "pages")
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity =Keyword.class, mappedBy = "pages", cascade = CascadeType.MERGE)
     private List<Keyword> keywords;
 }

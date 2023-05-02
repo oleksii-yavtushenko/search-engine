@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class CrawlConfiguration {
 
     private int crawlersNum = 1;
-    private int keywordExtractNum = 100;
+    private int keywordExtractNum = 1000;
     private String pageAcceptLanguage;
     private String pageAcceptCH;
 }

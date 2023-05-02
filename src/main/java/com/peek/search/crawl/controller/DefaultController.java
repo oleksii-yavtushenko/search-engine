@@ -38,7 +38,7 @@ public class DefaultController implements Controller {
         this.keywordExtractor = keywordExtractor;
         this.crawlConfiguration = crawlConfiguration;
         this.webPageService = webPageService;
-        //start();
+        start();
     }
 
     @Override
@@ -49,6 +49,7 @@ public class DefaultController implements Controller {
 
             CrawlConfig config = new CrawlConfig();
             config.setCrawlStorageFolder(crawlStorageFolder);
+            config.setResumableCrawling(true);
             config.setDefaultHeaders(List.of(
                     new BasicHeader(HttpHeaders.ACCEPT_LANGUAGE, crawlConfiguration.getPageAcceptLanguage()),
                     new BasicHeader("Accept-CH", crawlConfiguration.getPageAcceptCH())
@@ -63,7 +64,7 @@ public class DefaultController implements Controller {
             // For each crawl, you need to add some seed urls. These are the first
             // URLs that are fetched and then the crawler starts following links
             // which are found in these pages
-            crawlController.addSeed("https://rezka.ag/");
+            crawlController.addSeed("https://www.baeldung.com/");
 
             // The factory which creates instances of crawlers.
             CrawlController.WebCrawlerFactory<WebCrawler> factory = () -> new DefaultCrawler(

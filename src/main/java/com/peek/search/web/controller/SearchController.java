@@ -4,7 +4,9 @@ import com.peek.search.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
@@ -17,8 +19,11 @@ public class SearchController {
         return "index";
     }
 
-    public String search(String searchFormat) {
-        var pages = searchService.search(searchFormat);
-        return "";
+    @GetMapping("/search")
+    public String search(@RequestParam("query") String query,
+                         Model model) {
+        var pages = searchService.search(query);
+        model.addAttribute("pages", pages);
+        return "results";
     }
 }

@@ -7,6 +7,7 @@ import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.internal.StringUtil;
@@ -41,13 +42,14 @@ public class DefaultCrawler extends WebCrawler {
     public boolean shouldVisit(Page referringPage, WebURL url) {
         String href = url.getURL().toLowerCase();
         return !FILTERS.matcher(href).matches()
-                && href.startsWith("https://rezka.ag/");
+                && href.startsWith("https://www.baeldung.com/");
     }
 
     /**
      * This function is called when a page is fetched and ready
      * to be processed by your program.
      */
+    @Transactional
     @Override
     public void visit(Page page) {
         String url = page.getWebURL().getURL();
@@ -65,11 +67,11 @@ public class DefaultCrawler extends WebCrawler {
                         htmlParseData.getText(), htmlParseData.getTitle(), extractedKeywords);
             }
 
-            log.info("Extracted keywords: " + String.join(", ", extractedKeywords));
-            log.info("Num of extracted keywords: " + extractedKeywords.size());
-            log.info("Text length: " + text.length());
-            log.info("Html length: " + html.length());
-            log.info("Number of outgoing links: " + links.size());
+//            log.info("Extracted keywords: " + String.join(", ", extractedKeywords));
+//            log.info("Num of extracted keywords: " + extractedKeywords.size());
+//            log.info("Text length: " + text.length());
+//            log.info("Html length: " + html.length());
+//            log.info("Number of outgoing links: " + links.size());
         }
     }
 }

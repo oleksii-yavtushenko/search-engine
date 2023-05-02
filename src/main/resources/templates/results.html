@@ -7,10 +7,10 @@
     <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
 </head>
 <body>
-<h1 class="text-center logo shadow">путін хуйло</h1>
-<form class="search-form" method="get" th:action="@{/search}">
+<h1 class="logo-result shadow">путін хуйло</h1>
+<form class="search-result-form" method="get" th:action="@{/search}">
     <label>
-        <input id="query" required type="text" name="query" placeholder="пошук.." class="search-input">
+        <input id="query" required type="text" name="query" placeholder="пошук.." th:value="" class="search-input">
     </label>
     <button type="submit" class="search-button">
         <svg class="submit-button">
@@ -18,6 +18,16 @@
         </svg>
     </button>
 </form>
+
+<table class="container">
+    <tbody>
+    <tr th:each="page : ${pages}">
+        <td th:text="${page.title}"></td>
+        <td th:text="${page.url}"></td>
+        <td th:text="${page.showcaseContent}"></td>
+    </tr>
+    </tbody>
+</table>
 
 <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" display="none">
     <symbol id="search" viewBox="0 0 32 32">
