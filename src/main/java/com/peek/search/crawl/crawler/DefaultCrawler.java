@@ -7,14 +7,12 @@ import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.internal.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 @Slf4j
@@ -49,7 +47,6 @@ public class DefaultCrawler extends WebCrawler {
      * This function is called when a page is fetched and ready
      * to be processed by your program.
      */
-    @Transactional
     @Override
     public void visit(Page page) {
         String url = page.getWebURL().getURL();
@@ -59,19 +56,11 @@ public class DefaultCrawler extends WebCrawler {
             List<String> extractedKeywords =
                     keywordExtractor.extract(htmlParseData.getHtml(), crawlConfiguration.getKeywordExtractNum());
             String text = htmlParseData.getText();
-            String html = htmlParseData.getHtml();
-            Set<WebURL> links = htmlParseData.getOutgoingUrls();
 
             if (!extractedKeywords.isEmpty() && !text.isEmpty() && !StringUtil.isBlank(url)) {
                 webPageService.saveWebPage(page.getWebURL().getURL(),
                         htmlParseData.getText(), htmlParseData.getTitle(), extractedKeywords);
             }
-
-//            log.info("Extracted keywords: " + String.join(", ", extractedKeywords));
-//            log.info("Num of extracted keywords: " + extractedKeywords.size());
-//            log.info("Text length: " + text.length());
-//            log.info("Html length: " + html.length());
-//            log.info("Number of outgoing links: " + links.size());
         }
     }
 }

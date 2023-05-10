@@ -22,8 +22,9 @@ public class DefaultKeywordExtractor implements KeywordExtractor {
     public List<String> extract(String textContent, int numKeywords) {
         // Step 1: Parse the HTML page and extract the text content.
         // This can be done using an HTML parser library such as JSoup.
-        Document doc = Jsoup.parseBodyFragment(textContent);
-        String text = doc.text();
+        Document doc = Jsoup.parse(textContent);
+        doc.select("script, style").remove();
+        String text = doc.body().text();
 
         // Step 2: Clean the text content by removing HTML tags, stop words, and other irrelevant content.
         List<String> tokens = Arrays.stream(text.split("[^\\p{L}\\d]+"))

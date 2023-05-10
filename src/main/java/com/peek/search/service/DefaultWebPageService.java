@@ -29,7 +29,7 @@ public class DefaultWebPageService implements WebPageService {
 
         page.setUrl(url);
         page.setTitle(title);
-        page.setContent(content);
+        page.setContent(content.substring(1000, 5000));
 
         // Save the Page entity using the PageRepository
         pageRepository.save(page);

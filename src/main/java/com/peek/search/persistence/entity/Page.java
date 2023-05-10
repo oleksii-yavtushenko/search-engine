@@ -1,6 +1,6 @@
 package com.peek.search.persistence.entity;
 
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.Basic;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -29,8 +29,9 @@ public class Page {
 
     private String title;
 
+    @Basic(fetch=FetchType.LAZY)
     private String content;
 
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity =Keyword.class, mappedBy = "pages", cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity =Keyword.class, mappedBy = "pages")
     private List<Keyword> keywords;
 }

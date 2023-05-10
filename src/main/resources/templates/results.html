@@ -20,12 +20,14 @@
 </form>
 
 <div class="container">
+    <div th:if="${pages.size() == 0}">No results...</div>
+    <div th:if="${pages.size() > 0}" th:inline="text">[[${pages.size()}]] results</div>
     <div th:each="page : ${pages}">
         <a th:text="${page.title}" th:href="${page.url}"></a>
         <br>
-        <small><a th:text="${page.url}" th:href="${page.url}"></a></small>
-        <div th:text="${page.showcaseContent}"></div>
-        <br>
+        <small><a th:text="${page.url}" th:href="${page.url}"></a></small><br>
+        <small th:text="${page.showcaseContent}"></small>
+        <br><br>
     </div>
 </div>
 
