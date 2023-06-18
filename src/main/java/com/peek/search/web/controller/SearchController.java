@@ -27,4 +27,10 @@ public class SearchController {
         model.addAttribute("pages", pages);
         return "results";
     }
+
+    @GetMapping("/goto")
+    public String rankUp(@RequestParam String pageUrl) {
+        searchService.rankUp(pageUrl);
+        return pageUrl;
+    }
 }
