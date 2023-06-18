@@ -7,4 +7,5 @@ import java.util.List;
 public interface SearchService {
 
     List<SearchResultDto> search(String searchQuery);
+    void rankUp(String pageUrl);
 }
